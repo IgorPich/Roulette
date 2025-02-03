@@ -1,0 +1,30 @@
+import random
+
+# Funkcja wczytująca kolory z pliku
+def load_colors(file_path):
+    color_map = {}
+    with open(file_path, "r") as file:
+        for line in file:
+            number, color = line.strip().split()
+            color_map[int(number)] = color.lower()
+    return color_map
+
+# Ładowanie mapy kolorów
+color_map = load_colors("kolory.txt")
+
+# Funkcja do losowania liczby
+def spin_wheel():
+    return random.randint(0, 36)
+
+# Funkcja sprawdzająca wygraną
+def check_win(bet_type, bet_value, result_number):
+    winning_color = color_map[result_number]
+
+    if bet_type == "number" and bet_value == result_number:
+        return f" Gratulacje! Wygrałeś! Wylosowano {winning_color.capitalize()} {result_number}.", True
+    elif bet_type == "color" and bet_value == winning_color:
+        return f" Gratulacje! Wygrałeś! Wylosowano {winning_color.capitalize()} {result_number}.", True
+    elif winning_color == "green":
+        return f" Mega Big Win! Wylosowano {winning_color.capitalize()} {result_number}!", True
+    else:
+        return f" Niestety, przegrałeś. Wylosowano {winning_color.capitalize()} {result_number}.", False
