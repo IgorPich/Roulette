@@ -1,0 +1,36 @@
+
+import streamlit as st
+import time
+
+def show_microtransactions():
+    """
+    Funkcja wyświetla ofertę mikrotransakcyjną.
+    Użytkownik wybiera jeden z pakietów doładowania konta.
+    Po potwierdzeniu saldo zostaje zwiększone o wybraną ilość kredytów,
+    a gra automatycznie wraca do ekranu składania zakładu.
+    """
+    st.title("Sklep z Kredytami")
+    st.write("Wybierz ofertę doładowania konta:")
+
+    # Definicja dostępnych ofert: opis -> liczba kredytów do dodania.
+    packages = {
+        "100 kredytów za 0.99$": 100,
+        "500 kredytów za 4.99$": 500,
+        "1000 kredytów za 7.99$": 1000,
+    }
+
+    # Umożliwiamy wybór oferty z listy.
+    selected_package = st.selectbox("Wybierz ofertę:", list(packages.keys()))
+
+    # Po kliknięciu przycisku "Kup" następuje symulacja przetwarzania,
+    # saldo zostaje zwiększone o wartość wybranego pakietu,
+    # a gra przechodzi do etapu składania zakładu.
+    if st.button("Kup"):
+        credits = packages[selected_package]
+        st.info("Przetwarzanie zakupu...")
+        time.sleep(1)  # symulacja przetwarzania zakupu
+        st.session_state.balance += credits
+        st.success(f"Zakup udany! Doładowano konto o {credits} kredytów. Twoje nowe saldo: {st.session_state.balance} kredytów")
+        time.sleep(3)
+        st.session_state.step = 2  # powrót do etapu składania zakładu
+        st.rerun()
